@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 09:11:15 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/06 11:28:17 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/07 18:05:46 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@
 
 typedef struct s_philo
 {
-    int number;
-	int life;
-    int state;
-	struct s_philo	*next;
+    int         number;
+	int         life;
+    int         left_fork;
+    int         right_fork;
+    int         last_meal;
+    pthread_t   thread;
 }				t_philo;
 
 typedef struct s_param
@@ -36,6 +38,19 @@ typedef struct s_param
     int eat_nb;
 }				t_param;
 
+typedef struct s_simul
+{
+    t_param         param;
+    t_philo         *philo;
+    pthread_mutex_t *fork;
+}				t_simul;
 
+int check_param(t_param *param);
+int init_param(t_param *param, char **arg);
+int init_mutex(t_simul *simul);
+int init_philo(t_simul *simul);
+int project_init(t_simul *simul, char **param);
+
+int ft_atoi(const char *str);
 
 #endif

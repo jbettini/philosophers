@@ -11,7 +11,7 @@ OBJS = ${SRCS:.c=.o}
 		${CC} ${CFLAGS} -o $@ -c $?
 
 ${NAME}:	${OBJS}	
-			${CC} -o ${NAME} ${OBJS}
+			${CC} ${CFLAGS} -o ${NAME} ${OBJS}
 
 all:	${NAME} 
 
