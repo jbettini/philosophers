@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 18:04:29 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/07 18:15:21 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/08 19:51:23 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int init_philo(t_simul *simul)
         return (1);
     while (++i < simul->param.philo_nb)
     {
+        simul->philo[i].param = simul->param;
         simul->philo[i].number = i;
         simul->philo[i].life = 1;
         simul->philo[i].left_fork = i;
@@ -78,6 +79,8 @@ int init_philo(t_simul *simul)
         else
             simul->philo[i].right_fork = 0;
         simul->philo[i].last_meal = 0;
+        simul->philo[i].eat_time = 0;
+
     }
     return (0);
 }
@@ -87,8 +90,8 @@ int project_init(t_simul *simul, char **param)
     if (init_param(&(simul->param), param))
         return (1);
     if (init_mutex(simul))
-        return (1);
+        return (2);
     if (init_philo(simul))
-        return (1);
+        return (3);
     return (0);
 }

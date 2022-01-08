@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 09:11:15 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/07 18:05:46 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/08 19:40:57 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-typedef struct s_philo
-{
-    int         number;
-	int         life;
-    int         left_fork;
-    int         right_fork;
-    int         last_meal;
-    pthread_t   thread;
-}				t_philo;
-
 typedef struct s_param
 {
     int philo_nb;
@@ -37,6 +27,18 @@ typedef struct s_param
     int time_to_sleep;
     int eat_nb;
 }				t_param;
+
+typedef struct s_philo
+{
+    int         number;
+	int         life;
+    int         left_fork;
+    int         right_fork;
+    int         last_meal;
+    int         eat_time;
+    t_param     param;
+    pthread_t   thread;
+}				t_philo;
 
 typedef struct s_simul
 {
