@@ -1,40 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 17:39:46 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/13 05:05:49 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/13 05:05:48 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_atoi(const char *str)
+long long get_time(void)
 {
-	int	neg;
-	int	res;
-	int	i;
+    struct timeval  t;
+    long long time;
 
-	i = 0;
-	res = 0;
-	neg = 1;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			neg -= 2;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		res *= 10;
-		res += str[i] - 48;
-		i++;
-	}
-	return (res * neg);
+    gettimeofday(&t , NULL);
+    time = (t.tv_sec * 1e3) + (t.tv_usec / 1e-3);
+    return (time);
 }
 
+void    spin_sleep(long long ms)
+{
+    long long   start;
+
+    start = get_time();
+    while (get_time() - start < ms)
+        usleep(1);
+}

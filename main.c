@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 11:28:31 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/08 19:39:48 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/13 05:05:42 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ void    free_exit(t_simul *simul, int mod)
 
     i = -1;
     while (++i < simul->param.philo_nb && mod)
-    {
         pthread_join(simul->philo[i].thread, NULL);
-    }
+    i = -1;
+    while (++i < simul->param.philo_nb)
+        pthread_mutex_destroy(&(simul->fork[i]));
     free(simul->fork);
     free(simul->philo);
 }
