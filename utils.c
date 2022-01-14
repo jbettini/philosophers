@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 17:39:46 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/13 05:05:49 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/14 03:08:52 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,15 @@ int	ft_atoi(const char *str)
 	return (res * neg);
 }
 
+int	all_is_alive(t_philo *philo, int len)
+{
+	int	i;
+
+	i = -1;
+	while (++i < len)
+	{
+		if (philo[i].life == 0)
+			return (0);
+	}
+	return (1);
+}

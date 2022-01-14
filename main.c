@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 11:28:31 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/13 05:05:42 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/14 03:32:18 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,29 @@ void    free_exit(t_simul *simul, int mod)
     free(simul->philo);
 }
 
+void    *the_dining(void *philo_tmp)
+{
+    t_philo *philo;
+
+    philo = (t_philo *)philo_tmp;
+    while (all_is_alive(philo->simul->philo, philo->simul->param.philo_nb))
+    {
+        printf("%lld\n", philo->simul->start);
+    }
+    return (NULL);
+}
+
 int start_dining(t_simul *simul)
 {
+    int i;
 
+    i = -1;
+    simul->start = get_time();
+    while (++i < simul->param.philo_nb)
+    {
+        if (pthread_create(&(simul->philo[i].thread), NULL, &the_dining, &(simul->philo[i])))
+            return (1);
+    }
     return (0);
 }
 

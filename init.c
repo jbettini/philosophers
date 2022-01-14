@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 18:04:29 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/13 05:05:45 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/14 03:19:07 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int init_philo(t_simul *simul)
         return (1);
     while (++i < simul->param.philo_nb)
     {
-        simul->philo[i].param = simul->param;
+        simul->philo[i].simul = simul;
         simul->philo[i].number = i;
         simul->philo[i].life = 1;
         simul->philo[i].left_fork = i;
