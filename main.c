@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 11:28:31 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/17 03:36:39 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/17 03:40:58 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void    *the_dining(void *philo_tmp)
     }
     return (NULL);
 }
-
 
 void    the_dead(t_simul *simul)
 {
