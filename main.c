@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 11:28:31 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/17 03:40:58 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/17 03:49:48 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void    the_dead(t_simul *simul)
         {
             pthread_mutex_lock(&(simul->meal));
             meal = get_time() - philo[i].last_meal;
-            if (meal > simul->param.time_to_die)
+            if (meal >= simul->param.time_to_die)
                 philo[i].life = 0;
             // printf("MEALLL %d, ttd %d\n", meal, simul->param.time_to_die);
             print_log(&(philo[i]), get_time(), DIE);
@@ -141,6 +141,6 @@ int main(int ac, char **av)
         else
             free_exit(&simul, 1);
     }
-    // system("leaks philo");
+    system("leaks philo");
     return (0);
 }
