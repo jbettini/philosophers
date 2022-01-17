@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 17:39:46 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/17 03:35:56 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/17 04:46:58 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,18 @@ void    print_log(t_philo *philo, long long time_pass, int flg)
 			printf("%lld philo %d died\n", time, philo->number + 1);
 		pthread_mutex_unlock(&(philo->simul->log));
 	}
+}
+
+void    free_exit(t_simul *simul, int mod)
+{
+    int i;
+
+    i = -1;
+    while (++i < simul->param.philo_nb && mod)
+        pthread_join(simul->philo[i].thread, NULL);
+    i = -1;
+    while (++i < simul->param.philo_nb)
+        pthread_mutex_destroy(&(simul->fork[i]));
+    free(simul->fork);
+    free(simul->philo);
 }

@@ -6,63 +6,12 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 11:28:31 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/17 04:28:09 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/17 04:46:51 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void    free_exit(t_simul *simul, int mod)
-{
-    int i;
-
-    i = -1;
-    while (++i < simul->param.philo_nb && mod)
-        pthread_join(simul->philo[i].thread, NULL);
-    i = -1;
-    while (++i < simul->param.philo_nb)
-        pthread_mutex_destroy(&(simul->fork[i]));
-    free(simul->fork);
-    free(simul->philo);
-}
-
-void    take_fork(t_simul *simul, t_philo *philo)
-{
-    if (philo->number % 2)
-    {
-        pthread_mutex_lock(&(simul->fork[philo->right_fork]));
-        print_log(philo, get_time(), FORK);
-        pthread_mutex_lock(&(simul->fork[philo->left_fork]));
-        print_log(philo, get_time(), FORK);
-    }
-    else
-    {
-        pthread_mutex_lock(&(simul->fork[philo->left_fork]));
-        print_log(philo, get_time(), FORK);
-        pthread_mutex_lock(&(simul->fork[philo->right_fork]));
-        print_log(philo, get_time(), FORK);
-    }
-}
-
-void    eat(t_simul *simul, t_philo *philo)
-{
-    pthread_mutex_lock(&(simul->meal));
-    print_log(philo, get_time(), EAT);
-    philo->eat_time++;
-    philo->last_meal = get_time();
-    pthread_mutex_unlock(&(simul->meal));
-    spin_sleep(simul->param.time_to_eat);
-    pthread_mutex_unlock(&(simul->fork[philo->left_fork]));
-    pthread_mutex_unlock(&(simul->fork[philo->right_fork]));
-}
-
-void    sleep_n_think(t_simul *simul, t_philo *philo)
-{
-   print_log(philo, get_time(), SLEEP); 
-   spin_sleep(simul->param.time_to_sleep);
-   print_log(philo, get_time(), THINK);
-   usleep(100);
-}
 
 void    *the_dining(void *philo_tmp)
 {
@@ -85,7 +34,6 @@ void    the_dead(t_simul *simul)
     t_philo *philo;
 
     philo = simul->philo;
-    // usleep(simul->param.time_to_die * 8);
     while (!eat_and_life(philo, simul->param.philo_nb))
     {
         i = -1;
@@ -95,7 +43,6 @@ void    the_dead(t_simul *simul)
             meal = get_time() - philo[i].last_meal;
             if (meal > simul->param.time_to_die)
                 philo[i].life = 0;
-            // printf("MEALLL %d, ttd %d\n", meal, simul->param.time_to_die);
             print_log(&(philo[i]), get_time(), DIE);
             pthread_mutex_lock(&(simul->meal));
         }

@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 09:11:15 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/17 03:51:32 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/17 04:51:16 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,23 @@ typedef struct s_simul
     pthread_mutex_t meal;
 }				t_simul;
 
-
-int         eat_and_alive(t_philo *philo, int len);
-
-int         check_param(t_param *param);
-int         init_param(t_param *param, char **arg);
-int         init_mutex(t_simul *simul);
-int         init_philo(t_simul *simul);
+void        *the_dining(void *philo_tmp);
+void        the_dead(t_simul *simul);
+int         start_dining(t_simul *simul);
+void        take_fork(t_simul *simul, t_philo *philo);
+void        eat(t_simul *simul, t_philo *philo);
+void        sleep_n_think(t_simul *simul, t_philo *philo);
 int         project_init(t_simul *simul, char **param);
-
+int         init_philo(t_simul *simul);
+int         init_mutex(t_simul *simul);
+int         init_param(t_param *param, char **arg);
+int         check_param(t_param *param);
 long long   get_time(void);
 void        spin_sleep(long long ms);
-
-void        print_log(t_philo *philo, long long time_pass, int flg);
-int         eat_and_life(t_philo *philo, int len);
 int         ft_atoi(const char *str);
+int         eat_and_life(t_philo *philo, int len);
+void        print_log(t_philo *philo, long long time_pass, int flg);
+void        free_exit(t_simul *simul, int mod);
+
 
 #endif
