@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 09:11:15 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/14 03:26:28 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/17 03:13:46 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ typedef struct s_philo
 	int             life;
     int             left_fork;
     int             right_fork;
-    int             last_meal;
     int             eat_time;
+    int             last_meal;
     struct s_simul  *simul;
     pthread_t       thread;
 }				t_philo;
@@ -52,10 +52,12 @@ typedef struct s_simul
     t_param         param;
     t_philo         *philo;
     pthread_mutex_t *fork;
+    pthread_mutex_t log;
+    pthread_mutex_t meal;
 }				t_simul;
 
 
-int         all_is_alive(t_philo *philo, int len);
+int         eat_and_alive(t_philo *philo, int len);
 
 int         check_param(t_param *param);
 int         init_param(t_param *param, char **arg);
@@ -66,7 +68,8 @@ int         project_init(t_simul *simul, char **param);
 long long   get_time(void);
 void        spin_sleep(long long ms);
 
-int         all_is_alive(t_philo *philo, int len);
+void        print_log(t_philo *philo, long long time_pass, int flg);
+int         eat_and_life(t_philo *philo, int len);
 int         ft_atoi(const char *str);
 
 #endif

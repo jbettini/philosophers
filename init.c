@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 18:04:29 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/14 03:19:07 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/17 03:28:42 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int check_param(t_param *param)
         return (1);
     return (0);
 }
+
 int    init_param(t_param *param, char **arg)
 {
     param->philo_nb = ft_atoi(arg[0]);
@@ -78,7 +79,7 @@ int init_philo(t_simul *simul)
             simul->philo[i].right_fork = i + 1;
         else
             simul->philo[i].right_fork = 0;
-        simul->philo[i].last_meal = 0;
+        simul->philo[i].last_meal = get_time();
         simul->philo[i].eat_time = 0;
 
     }
