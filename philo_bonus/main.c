@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 11:28:31 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/20 07:52:06 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/21 05:16:15 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,55 +22,60 @@ void    the_dining(void *tmp_philo)
         one(philo->simul, philo);
     else
     {
-        while (!eat_and_life(philo->simul->philo, philo->simul->param.philo_nb))
+        while (philo->simul->life == 1)
         {
             take_fork(philo->simul, philo);
             eat(philo->simul, philo);
+            if (philo->eat_time >= philo->simul->param.eat_nb && philo->simul->param.eat_nb != -42)
+                break ;
             sleep_n_think(philo->simul, philo);
         }
     }
 }
 
-void    the_dead(t_simul *simul)
+void    *the_dead(void *philo_tmp)
 {
-    int     i;
     int     meal;
     t_philo *philo;
 
-    philo = simul->philo;
-    while (!eat_and_life(philo, simul->param.philo_nb))
+    philo = (t_philo *)philo_tmp;
+    while (philo->simul->life)
     {
-        i = -1;
-        while (++i < simul->param.philo_nb && !eat_and_life(philo, simul->param.philo_nb))
-        {
-            sem_wait(simul->meal);
-            meal = get_time() - philo[i].last_meal;
-            if (meal > simul->param.time_to_die)
-                philo[i].life = 0;
-            print_log(&(philo[i]), get_time(), DIE);
-            sem_post(simul->meal);
-        }
+        sem_wait(philo->simul->meal);
+        meal = get_time() - philo->last_meal;
+        if (meal > philo->simul->param.time_to_die)
+            philo->simul->life = 0;
+        print_log(philo, get_time(), DIE);
+        sem_post(philo->simul->meal);
+        if (philo->eat_time >= philo->simul->param.eat_nb && philo->simul->param.eat_nb != -42)
+            break ;
     }
+    return (NULL);
 }
 
 int start_dining(t_simul *simul)
 {
-    int i;
+	int i;
 
-    i = -1;
-    simul->start = get_time();
-    while (++i < simul->param.philo_nb)
-    {
-        usleep(100);
-        simul->philo[i].pid = fork();
-        if (simul->philo[i].pid < 0)
-            return (1);
-        if (simul->philo->pid == 0)
+	i = -1;
+	simul->start = get_time();
+	while (++i < simul->param.philo_nb)
+	{
+		usleep(100);
+		simul->philo[i].pid = fork();
+		if (simul->philo[i].pid < 0)
+			return (1);
+		if (simul->philo[i].pid == 0)
+        {
+			if (pthread_create(&(simul->philo[i].death), NULL, &the_dead, &(simul->philo[i])))
+                return (write(2, "Thread creat Error\n", 1));
+            // if ((simul->philo[i].number) % 2)
+            //     spin_sleep(simul->param.time_to_eat);
             the_dining(&(simul->philo[i]));
-    }
-    if (simul->philo[0].pid)
-        the_dead(simul);
-    return (0);
+        }
+	}
+    free_exit(simul);
+	return (0);
 }
 
 int main(int ac, char **av)
@@ -84,18 +89,9 @@ int main(int ac, char **av)
     {
         ret = project_init(&simul, &av[1]);
         if (ret)
-        {
-            if (ret == 3)
-                free_exit(&simul, 0);
-            return (write(2, "Initialising error\n", 19));
-        }
-        if (start_dining(&simul))
-        {
-            free_exit(&simul, 0);
-            return (write(2, "Process error\n", 21));
-        }
+           return(write(2, "Initialising error\n", 20));
         else
-            free_exit(&simul, 1);
+            start_dining(&simul);    
     }
     // system("leaks philo");
     return (0);

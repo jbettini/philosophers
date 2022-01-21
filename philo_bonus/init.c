@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 18:04:29 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/20 07:16:50 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/21 05:38:50 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,16 @@ int    init_param(t_param *param, char **arg)
 
 int init_sem(t_simul *simul)
 {
-    sem_unlink("fork");
-    simul->fork = sem_open("fork", O_CREAT, O_EXCL, 0666, simul->param.philo_nb);
+    sem_unlink("/fork");
+    simul->fork = sem_open("fork", O_CREAT, O_EXCL, 0644, simul->param.philo_nb);
     if (simul->fork <= 0)
         return (1);
-    sem_unlink("log");
-    simul->log = sem_open("log", O_CREAT, O_EXCL, 0666, 1);
+    sem_unlink("/log");
+    simul->log = sem_open("log", O_CREAT, O_EXCL, 0644, 1);
     if (simul->log <= 0)
         return (1);
-    sem_unlink("meal");
-    simul->meal = sem_open("meal", O_CREAT, O_EXCL, 0666, 1);
+    sem_unlink("/meal");
+    simul->meal = sem_open("meal", O_CREAT, O_EXCL, 0644, 1);
     if (simul->meal <= 0)
         return (1);
     return (0);
@@ -73,7 +73,6 @@ int init_philo(t_simul *simul)
     {
         simul->philo[i].simul = simul;
         simul->philo[i].number = i;
-        simul->philo[i].life = 1;
         simul->philo[i].left_fork = i;
         if (i + 1 < simul->param.philo_nb)
             simul->philo[i].right_fork = i + 1;
@@ -94,5 +93,6 @@ int project_init(t_simul *simul, char **param)
         return (2);
     if (init_philo(simul))
         return (3);
+    simul->life = 1;
     return (0);
 }

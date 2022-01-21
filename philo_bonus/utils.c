@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 17:39:46 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/20 07:35:06 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/21 04:42:03 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,11 @@ int	ft_atoi(const char *str)
 	return (res * neg);
 }
 
-int	eat_and_life(t_philo *philo, int len)
-{
-	int	i;
-	int	eat_nb;
-
-	i = -1;
-	eat_nb = philo[0].simul->param.eat_nb;
-	while (++i < len)
-	{
-		if (philo[i].life == 0)
-			return (1);
-		else if (philo[i].eat_time >= eat_nb && eat_nb != -42)
-			return (2);
-	}
-	return (0);
-}
-
 void    print_log(t_philo *philo, long long time_pass, int flg)
 {
 	long long	time;
 
-	if (!eat_and_life(philo->simul->philo, philo->simul->param.philo_nb))
+	if (philo->simul->life == 1)
 	{
 		sem_wait(philo->simul->log);
 		time = time_pass - philo->simul->start;
@@ -73,7 +56,7 @@ void    print_log(t_philo *philo, long long time_pass, int flg)
 			printf("%lld philo %d has taken a fork\n", time, philo->number + 1);
 		sem_post(philo->simul->log);
 	}	
-	else if (eat_and_life(philo->simul->philo, philo->simul->param.philo_nb) == 1)
+	else if (philo->simul->life == 0)
 	{
 		sem_wait(philo->simul->log);
 		time = time_pass - philo->simul->start;
@@ -89,16 +72,20 @@ void	ft_destroy_sem(char *name, sem_t *sem)
 	sem_close(sem);
 }
 
-void    free_exit(t_simul *simul, int mod)
+void    free_exit(t_simul *simul)
 {
 	int	i;
+	int	status;
 
+	i = -1;
+    free(simul->philo);
+	while (++i < simul->param.philo_nb)
+	{
+		pthread_join(simul->philo[i].death, NULL);
+		waitpid(-1, &status, 0);
+	}
 	ft_destroy_sem("fork", simul->fork);
 	ft_destroy_sem("meal", simul->meal);
 	ft_destroy_sem("log", simul->log);
-	if (mod == 1)
-	{
-    	free(simul->philo);
-		waitpid(-1 , &i, 0);
-	}
+	
 }

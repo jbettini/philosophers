@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 09:11:15 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/20 07:38:22 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/21 04:22:56 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <semaphore.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <signal.h>
 
 # define DIE 0
 # define EAT 1
@@ -40,17 +42,18 @@ typedef struct s_param
 typedef struct  s_philo
 {
     int             number;
-	int             life;
     int             left_fork;
     int             right_fork;
     int             eat_time;
     int             last_meal;
     struct s_simul  *simul;
-    int             pid;
+    pid_t           pid;
+    pthread_t       death;
 }				t_philo;
 
 typedef struct  s_simul
 {
+	int             life;
     long long       start;
     t_param         param;
     t_philo         *philo;
@@ -60,7 +63,7 @@ typedef struct  s_simul
 }				t_simul;
 
 void        the_dining(void *tmp_philo);
-void        the_dead(t_simul *simul);
+void        *the_dead(void *simul);
 int         start_dining(t_simul *simul);
 void        take_fork(t_simul *simul, t_philo *philo);
 void        eat(t_simul *simul, t_philo *philo);
@@ -75,8 +78,7 @@ void        spin_sleep(long long ms);
 int         ft_atoi(const char *str);
 int         eat_and_life(t_philo *philo, int len);
 void        print_log(t_philo *philo, long long time_pass, int flg);
-void        free_exit(t_simul *simul, int mod);
+void        free_exit(t_simul *simul);
 void        one(t_simul *simul, t_philo *philo);
-
 
 #endif
