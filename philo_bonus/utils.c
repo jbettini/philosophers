@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 17:39:46 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/21 04:42:03 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/21 05:51:47 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ void    free_exit(t_simul *simul)
 		pthread_join(simul->philo[i].death, NULL);
 		waitpid(-1, &status, 0);
 	}
-	ft_destroy_sem("fork", simul->fork);
-	ft_destroy_sem("meal", simul->meal);
-	ft_destroy_sem("log", simul->log);
+	ft_destroy_sem("/fork", simul->fork);
+	ft_destroy_sem("/meal", simul->meal);
+	ft_destroy_sem("/log", simul->log);
 	
 }

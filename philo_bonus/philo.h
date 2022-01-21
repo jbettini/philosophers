@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 09:11:15 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/21 04:22:56 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/21 05:53:34 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/types.h>
 # include <signal.h>
 
+# define SEM_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
 # define DIE 0
 # define EAT 1
 # define SLEEP 2

@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 11:28:31 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/21 05:16:15 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/21 05:48:34 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int start_dining(t_simul *simul)
         {
 			if (pthread_create(&(simul->philo[i].death), NULL, &the_dead, &(simul->philo[i])))
                 return (write(2, "Thread creat Error\n", 1));
-            // if ((simul->philo[i].number) % 2)
+            // if (!((simul->philo[i].number) % 2))
             //     spin_sleep(simul->param.time_to_eat);
             the_dining(&(simul->philo[i]));
         }
