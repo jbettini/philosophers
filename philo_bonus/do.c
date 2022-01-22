@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 04:45:36 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/22 08:47:51 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/22 21:26:46 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void    eat(t_simul *simul, t_philo *philo)
     philo->eat_time++;
     if (philo->eat_time >= philo->simul->param.eat_nb && philo->simul->param.eat_nb != -42)
     {
-        sem_wait(simul->log);
+        sem_wait(philo->simul->log);
         free_exit(simul);
     }
     philo->last_meal = get_time();

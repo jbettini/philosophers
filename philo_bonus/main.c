@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 11:28:31 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/22 08:49:32 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/22 21:34:45 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ void    the_dining(void *tmp_philo)
         {
             take_fork(philo->simul, philo);
             eat(philo->simul, philo);
-            if (philo->eat_time >= philo->simul->param.eat_nb && philo->simul->param.eat_nb != -42)
+            if ((philo->eat_time >= philo->simul->param.eat_nb && philo->simul->param.eat_nb != -42) || philo->simul->life == 0)
                 break ;
             sleep_n_think(philo->simul, philo);
         }
     }
+    exit(EXIT_SUCCESS);
 }
 
 void    *the_dead(void *philo_tmp)
@@ -46,16 +47,13 @@ void    *the_dead(void *philo_tmp)
         sem_wait(philo->simul->meal);
         meal = get_time() - philo->last_meal;
         if (meal > philo->simul->param.time_to_die)
-        {
             philo->simul->life = 0;
-            print_log(philo, get_time(), DIE);
-            sem_wait(philo->simul->log);
-            free_exit(philo->simul);
-        }
+        print_log(philo, get_time(), DIE);
         sem_post(philo->simul->meal);
-        if (philo->eat_time >= philo->simul->param.eat_nb && philo->simul->param.eat_nb != -42)
+        if ((philo->eat_time >= philo->simul->param.eat_nb && philo->simul->param.eat_nb != -42) || philo->simul->life == 0)
             break ;
     }
+    exit(EXIT_SUCCESS);
     return (NULL);
 }
 
