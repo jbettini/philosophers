@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 17:39:46 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/21 05:51:47 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/22 08:52:51 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void    print_log(t_philo *philo, long long time_pass, int flg)
 {
 	long long	time;
 
-	if (philo->simul->life == 1)
+	if (philo->simul->life == 1 && flg != DIE)
 	{
 		sem_wait(philo->simul->log);
 		time = time_pass - philo->simul->start;
@@ -56,18 +56,24 @@ void    print_log(t_philo *philo, long long time_pass, int flg)
 			printf("%lld philo %d has taken a fork\n", time, philo->number + 1);
 		sem_post(philo->simul->log);
 	}	
-	else if (philo->simul->life == 0)
+	else if (philo->simul->life == 0 && flg == DIE)
 	{
 		sem_wait(philo->simul->log);
-		time = time_pass - philo->simul->start;
-		if (flg == DIE)
-			printf("%lld philo %d died\n", time, philo->number + 1);
+		// if (philo->simul->life == 0)
+		// {
+			time = time_pass - philo->simul->start;
+			if (flg == DIE)
+				printf("%lld philo %d died\n", time, philo->number + 1);
+		// 	// free_exit(philo->simul);
+		// // }
 		sem_post(philo->simul->log);
 	}
 }
 
-void	ft_destroy_sem(char *name, sem_t *sem)
+void	ft_destroy_sem(char *name, sem_t *sem)//, int mod)
 {
+	// if (mod == 1)
+	// 	sem_post(sem);
 	sem_unlink(name);
 	sem_close(sem);
 }
@@ -79,13 +85,13 @@ void    free_exit(t_simul *simul)
 
 	i = -1;
     free(simul->philo);
+	ft_destroy_sem("/fork", simul->fork);
+	ft_destroy_sem("/meal", simul->meal);
+	ft_destroy_sem("/log", simul->log);
 	while (++i < simul->param.philo_nb)
 	{
 		pthread_join(simul->philo[i].death, NULL);
 		waitpid(-1, &status, 0);
 	}
-	ft_destroy_sem("/fork", simul->fork);
-	ft_destroy_sem("/meal", simul->meal);
-	ft_destroy_sem("/log", simul->log);
 	
 }
