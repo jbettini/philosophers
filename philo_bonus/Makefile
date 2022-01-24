@@ -8,10 +8,10 @@ SRCS	=	${wildcard *.c}
 OBJS = ${SRCS:.c=.o}
 
 %.o: %.c
-		${CC} ${CFLAGS} -o $@ -c $?
+		${CC} -o $@ -c $?
 
 ${NAME}:	${OBJS}	
-			${CC} ${CFLAGS} -o ${NAME} ${OBJS}
+			${CC} -o ${NAME} ${OBJS}
 
 all:	${NAME} 
 

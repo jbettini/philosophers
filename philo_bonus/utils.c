@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 17:39:46 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/22 21:31:19 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/24 04:58:19 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,18 @@ void    print_log(t_philo *philo, long long time_pass, int flg)
 			printf("%lld philo %d is thinking\n", time, philo->number + 1);
 		else if (flg == FORK)
 			printf("%lld philo %d has taken a fork\n", time, philo->number + 1);
-		sem_post(philo->simul->log);
+		if (philo->eat_time >= philo->simul->param.eat_nb && philo->simul->param.eat_nb != -42)
+			sem_post(philo->simul->end);
+		else
+			sem_post(philo->simul->log);
 	}	
 	else if (philo->simul->life == 0 && flg == DIE)
 	{
 		sem_wait(philo->simul->log);
 		time = time_pass - philo->simul->start;
 		if (flg == DIE)
-		{
 			printf("%lld philo %d died\n", time, philo->number + 1);
-			if ((philo->eat_time >= philo->simul->param.eat_nb && philo->simul->param.eat_nb != -42) || philo->simul->life == 0)
-        	    sem_wait(philo->simul->log);
-		}
-		sem_post(philo->simul->log);
+		sem_post(philo->simul->end);
 	}
 }
 
@@ -76,26 +75,32 @@ void	ft_destroy_sem(char *name, sem_t *sem)
 	sem_close(sem);
 }
 
-void    free_exit(t_simul *simul)
+int	parent(t_philo *philo)
 {
 	int	i;
-	int	status;
+
+	i = 0;
+	while (i < philo->simul->param.philo_nb)
+	{
+		if (philo[i].pid == 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void    free_exit(t_simul *simul, t_philo *philo)
+{
+	int	i;
 
 	i = -1;
-	ft_destroy_sem("/fork", simul->fork);
-	ft_destroy_sem("/meal", simul->meal);
-	ft_destroy_sem("/log", simul->log);
-	waitpid(-1, &status, 0);
-	if (status)
+	sem_wait(philo->simul->end);
+	if (parent(philo))
 	{
+		while (++i < simul->param.philo_nb)
+			kill(philo[i].pid, 15);
 		i = -1;
 		while (++i < simul->param.philo_nb)
-		{
-			status = simul->philo[i].pid;
-			pthread_join(simul->philo[i].death, NULL);
-			if(i + 1 >= simul->param.philo_nb)
-				free(simul->philo);
-			kill(status, 2);
-		}
+			waitpid(philo[i].pid, NULL, 0);
 	}
 }

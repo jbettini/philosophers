@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 09:11:15 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/22 10:13:24 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/24 03:30:05 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <sys/types.h>
 # include <signal.h>
 
-# define SEM_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
+# define SEM_PERMS S_IRUSR | S_IRGRP | S_IWUSR) | S_IWGRP
 # define DIE 0
 # define EAT 1
 # define SLEEP 2
@@ -58,12 +58,14 @@ typedef struct  s_simul
     long long       start;
     t_param         param;
     t_philo         *philo;
+    sem_t           *end;
     sem_t           *fork;
     sem_t           *log;
     sem_t           *meal;
 }				t_simul;
 
-void        the_dining(void *tmp_philo);
+int         ft_sem_init(char *name, sem_t *sem, int param);
+void        the_dining(t_philo *philo, t_simul *simul);
 void        *the_dead(void *simul);
 int         start_dining(t_simul *simul);
 void        take_fork(t_simul *simul, t_philo *philo);
@@ -79,7 +81,7 @@ void        spin_sleep(long long ms);
 int         ft_atoi(const char *str);
 int         eat_and_life(t_philo *philo, int len);
 void        print_log(t_philo *philo, long long time_pass, int flg);
-void        free_exit(t_simul *simul);
+void        free_exit(t_simul *simul, t_philo *philo);
 void        one(t_simul *simul, t_philo *philo);
 
 #endif

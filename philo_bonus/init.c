@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 18:04:29 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/22 21:25:03 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/24 04:58:46 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,22 @@ int    init_param(t_param *param, char **arg)
 
 int init_sem(t_simul *simul)
 {
+   
     sem_unlink("/fork");
-    simul->fork = sem_open("/fork", O_CREAT | O_EXCL, SEM_PERMS, simul->param.philo_nb);
+    simul->fork = sem_open("/fork", O_CREAT | O_EXCL , 777, simul->param.philo_nb);
     if (simul->fork <= 0)
         return (1);
     sem_unlink("/log");
-    simul->log = sem_open("/log", O_CREAT | O_EXCL, SEM_PERMS, 1);
+    simul->log = sem_open("/log", O_CREAT | O_EXCL, 777, 1);
     if (simul->log <= 0)
         return (1);
     sem_unlink("/meal");
-    simul->meal = sem_open("/meal", O_CREAT | O_EXCL, SEM_PERMS, 1);
+    simul->meal = sem_open("/meal", O_CREAT | O_EXCL, 777, 1);
     if (simul->meal <= 0)
+        return (1);
+    sem_unlink("/end");
+    simul->end = sem_open("/end", O_CREAT | O_EXCL, 777, 0);
+    if (simul->end <= 0)
         return (1);
     return (0);
 }
