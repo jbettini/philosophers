@@ -103,4 +103,5 @@ void    free_exit(t_simul *simul, t_philo *philo)
 		while (++i < simul->param.philo_nb)
 			waitpid(philo[i].pid, NULL, 0);
 	}
+	free(simul->philo);
 }
