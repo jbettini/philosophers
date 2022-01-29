@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jbettini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/06 09:11:15 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/24 03:30:05 by jbettini         ###   ########.fr       */
+/*   Created: 2022/01/28 12:18:05 by jbettini          #+#    #+#             */
+/*   Updated: 2022/01/28 12:24:22 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <sys/types.h>
 # include <signal.h>
 
-# define SEM_PERMS S_IRUSR | S_IRGRP | S_IWUSR) | S_IWGRP
 # define DIE 0
 # define EAT 1
 # define SLEEP 2
@@ -33,55 +32,56 @@
 
 typedef struct s_param
 {
-    int philo_nb;
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
-    int eat_nb;
+	int	philo_nb;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	eat_nb;
 }				t_param;
 
-typedef struct  s_philo
+typedef struct s_philo
 {
-    int             number;
-    int             left_fork;
-    int             right_fork;
-    int             eat_time;
-    int             last_meal;
-    struct s_simul  *simul;
-    pid_t           pid;
-    pthread_t       death;
+	int				number;
+	int				left_fork;
+	int				right_fork;
+	int				eat_time;
+	int				last_meal;
+	struct s_simul	*simul;
+	pid_t			pid;
+	pthread_t		death;
 }				t_philo;
 
-typedef struct  s_simul
+typedef struct s_simul
 {
-	int             life;
-    long long       start;
-    t_param         param;
-    t_philo         *philo;
-    sem_t           *end;
-    sem_t           *fork;
-    sem_t           *log;
-    sem_t           *meal;
+	int				life;
+	long long		start;
+	t_param			param;
+	t_philo			*philo;
+	sem_t			*end;
+	sem_t			*fork;
+	sem_t			*log;
+	sem_t			*meal;
 }				t_simul;
 
-int         ft_sem_init(char *name, sem_t *sem, int param);
-void        the_dining(t_philo *philo, t_simul *simul);
-void        *the_dead(void *simul);
-int         start_dining(t_simul *simul);
-void        take_fork(t_simul *simul, t_philo *philo);
-void        eat(t_simul *simul, t_philo *philo);
-void        sleep_n_think(t_simul *simul, t_philo *philo);
-int         project_init(t_simul *simul, char **param);
-int         init_philo(t_simul *simul);
-int         init_mutex(t_simul *simul);
-int         init_param(t_param *param, char **arg);
-int         check_param(t_param *param);
-long long   get_time(void);
-void        spin_sleep(long long ms);
-int         ft_atoi(const char *str);
-int         eat_and_life(t_philo *philo, int len);
-void        print_log(t_philo *philo, long long time_pass, int flg);
-void        free_exit(t_simul *simul, t_philo *philo);
-void        one(t_simul *simul, t_philo *philo);
+int			ft_sem_init(char *name, sem_t *sem, int param);
+void		the_dining(t_philo *philo, t_simul *simul);
+void		*the_dead(void *simul);
+int			start_dining(t_simul *simul);
+void		take_fork(t_simul *simul, t_philo *philo);
+void		eat(t_simul *simul, t_philo *philo);
+void		sleep_n_think(t_simul *simul, t_philo *philo);
+int			project_init(t_simul *simul, char **param);
+int			init_philo(t_simul *simul);
+int			init_mutex(t_simul *simul);
+int			init_param(t_param *param, char **arg);
+int			check_param(t_param *param);
+long long	get_time(void);
+void		spin_sleep(long long ms);
+int			ft_atoi(const char *str);
+int			eat_and_life(t_philo *philo, int len);
+void		print_log(t_philo *philo, long long time_pass, int flg);
+void		free_exit(t_simul *simul, t_philo *philo);
+void		ft_sem_destroy(char *name, sem_t *sem);
+void		one(t_simul *simul, t_philo *philo);
 
 #endif

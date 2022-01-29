@@ -3,31 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jbettini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 17:39:46 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/20 07:42:23 by jbettini         ###   ########.fr       */
+/*   Created: 2022/01/28 12:14:12 by jbettini          #+#    #+#             */
+/*   Updated: 2022/01/28 12:25:22 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long long get_time(void)
+long long	get_time(void)
 {
-    struct timeval  t;
-    long long       time;
+	struct timeval	t;
+	long long		time;
 
-    gettimeofday(&t , NULL);
-        // return (write(2, "Get_time Error\n", 16));
-    time = (t.tv_sec * 1e3) + (t.tv_usec * 1e-3);
-    return (time);
+	gettimeofday(&t, NULL);
+	time = (t.tv_sec * 1e3) + (t.tv_usec * 1e-3);
+	return (time);
 }
 
-void    spin_sleep(long long ms)
+void	spin_sleep(long long ms)
 {
-    long long   start;
+	long long	start;
 
-    start = get_time();
-    while (get_time() - start < ms)
-        usleep(500);
+	start = get_time();
+	while (get_time() - start < ms)
+		usleep(500);
+}
+
+void	ft_sem_destroy(char *name, sem_t *sem)
+{
+	sem_unlink(name);
+	sem_close(sem);
 }
