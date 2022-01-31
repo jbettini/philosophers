@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbettini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 12:07:42 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/28 12:26:52 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/31 17:07:51 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 int	ft_atoi(const char *str)
 {
@@ -38,15 +38,6 @@ int	ft_atoi(const char *str)
 	return (res * neg);
 }
 
-void	post_from_print(t_philo *philo)
-{
-	if (philo->eat_time >= philo->simul->param.eat_nb \
-			&& philo->simul->param.eat_nb != -42)
-		sem_post(philo->simul->end);
-	else
-		sem_post(philo->simul->log);
-}
-
 void	print_log(t_philo *philo, long long time_pass, int flg)
 {
 	long long	time;
@@ -63,7 +54,7 @@ void	print_log(t_philo *philo, long long time_pass, int flg)
 			printf("%lld philo %d is thinking\n", time, philo->number + 1);
 		else if (flg == FORK)
 			printf("%lld philo %d has taken a fork\n", time, philo->number + 1);
-		post_from_print(philo);
+		sem_post(philo->simul->log);
 	}	
 	else if (philo->simul->life == 0 && flg == DIE)
 	{
@@ -108,4 +99,5 @@ void	free_exit(t_simul *simul, t_philo *philo)
 	ft_sem_destroy("/end", simul->end);
 	ft_sem_destroy("/meal", simul->meal);
 	ft_sem_destroy("/fork", simul->fork);
+	ft_sem_destroy("/feed", simul->fork);
 }

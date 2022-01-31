@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbettini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 11:46:50 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/28 11:53:53 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/31 17:21:15 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	the_dead(t_simul *simul)
 		{
 			pthread_mutex_lock(&(simul->meal));
 			meal = get_time() - philo[i].last_meal;
-			if (meal > simul->param.time_to_die)
+			if (meal >= simul->param.time_to_die)
 			{
 				philo[i].life = 0;
 				print_log(&(philo[i]), get_time(), DIE);

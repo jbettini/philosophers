@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbettini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 12:18:05 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/28 12:24:22 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/31 17:16:17 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 # include <pthread.h>
 # include <unistd.h>
 # include <sys/time.h>
@@ -57,12 +57,15 @@ typedef struct s_simul
 	long long		start;
 	t_param			param;
 	t_philo			*philo;
+	pthread_t		stop_eat;
 	sem_t			*end;
 	sem_t			*fork;
 	sem_t			*log;
+	sem_t			*feed;
 	sem_t			*meal;
 }				t_simul;
 
+int			parent(t_philo *philo);
 int			ft_sem_init(char *name, sem_t *sem, int param);
 void		the_dining(t_philo *philo, t_simul *simul);
 void		*the_dead(void *simul);

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbettini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 12:23:25 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/28 12:23:27 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/31 17:19:23 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	the_dining(t_philo *philo, t_simul *simul)
 {
@@ -19,11 +19,13 @@ void	the_dining(t_philo *philo, t_simul *simul)
 		take_fork(simul, philo);
 		eat(simul, philo);
 		if (philo->eat_time >= philo->simul->param.eat_nb \
-				&& philo->simul->param.eat_nb != -42)
+			&& philo->simul->param.eat_nb != -42)
+		{
+			sem_post(simul->feed);
 			break ;
+		}
 		sleep_n_think(simul, philo);
 	}
-	exit(1);
 }
 
 void	*the_dead(void *philo_tmp)
@@ -38,18 +40,27 @@ void	*the_dead(void *philo_tmp)
 	{
 		sem_wait(simul->meal);
 		meal = get_time() - philo->last_meal;
-		if (meal > simul->param.time_to_die)
+		if (meal >= simul->param.time_to_die)
 		{
 			simul->life = 0;
 			print_log(philo, get_time(), DIE);
-			exit(1);
 		}
 		sem_post(simul->meal);
-		if (philo->eat_time >= philo->simul->param.eat_nb \
-				&& philo->simul->param.eat_nb != -42)
-			break ;
 	}
-	exit(1);
+	return (NULL);
+}
+
+void	*stop_feed(void *tmp)
+{
+	int		i;
+	t_simul	*simul;
+
+	i = -1;
+	simul = (t_simul *)tmp;
+	while (++i < simul->param.philo_nb)
+		sem_wait(simul->feed);
+	sem_wait(simul->log);
+	sem_post(simul->end);
 	return (NULL);
 }
 
@@ -73,6 +84,9 @@ int	start_dining(t_simul *simul)
 			break ;
 		}
 	}
+	if (parent(simul->philo) && simul->param.eat_nb != -42)
+		if (pthread_create(&(simul->stop_eat), NULL, &stop_feed, simul))
+			return (write(2, "Thread create Error\n", 21));
 	free_exit(simul, simul->philo);
 	return (0);
 }

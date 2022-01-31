@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   do.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbettini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 11:03:37 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/28 11:53:36 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:51:35 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ void	eat(t_simul *simul, t_philo *philo)
 	print_log(philo, get_time(), EAT);
 	if (++philo->eat_time && \
 			eat_and_life(simul->philo, simul->param.philo_nb) == 2)
+	{
+		free_exit(simul, 1);
 		exit(1);
+	}
 	philo->last_meal = get_time();
 	pthread_mutex_unlock(&(simul->meal));
 	spin_sleep(simul->param.time_to_eat);

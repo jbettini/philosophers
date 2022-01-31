@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbettini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 12:00:09 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/28 12:04:33 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/31 17:08:12 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 int	check_param(t_param *param)
 {
@@ -62,6 +62,10 @@ int	init_sem(t_simul *simul)
 	sem_unlink("/end");
 	simul->end = sem_open("/end", O_CREAT | O_EXCL, 777, 0);
 	if (simul->end <= 0)
+		return (1);
+	sem_unlink("/feed");
+	simul->feed = sem_open("/feed", O_CREAT | O_EXCL, 777, 0);
+	if (simul->feed <= 0)
 		return (1);
 	return (0);
 }

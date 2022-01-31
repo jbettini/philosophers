@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 11:56:51 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/29 08:25:22 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:32:51 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,15 @@ int	all_eat_time(t_philo *philo, int len)
 int	eat_and_life(t_philo *philo, int len)
 {
 	int	i;
-	int	eat_nb;
 
 	i = -1;
-	eat_nb = philo[0].simul->param.eat_nb;
 	while (++i < len)
 	{
 		if (philo[i].life == 0)
 			return (1);
 	}
-	if (all_eat_time(philo, philo->simul->param.philo_nb))
+	if (all_eat_time(philo, philo->simul->param.philo_nb) \
+		&& philo->simul->param.eat_nb != -42)
 		return (2);
 	return (0);
 }
