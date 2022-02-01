@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 12:23:25 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/31 17:19:23 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/02/01 00:04:08 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,6 @@ void	the_dining(t_philo *philo, t_simul *simul)
 	{
 		take_fork(simul, philo);
 		eat(simul, philo);
-		if (philo->eat_time >= philo->simul->param.eat_nb \
-			&& philo->simul->param.eat_nb != -42)
-		{
-			sem_post(simul->feed);
-			break ;
-		}
 		sleep_n_think(simul, philo);
 	}
 }

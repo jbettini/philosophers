@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 12:18:05 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/31 17:16:17 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/02/01 00:03:02 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_philo
 	int				left_fork;
 	int				right_fork;
 	int				eat_time;
+	int				all_eat;
 	int				last_meal;
 	struct s_simul	*simul;
 	pid_t			pid;

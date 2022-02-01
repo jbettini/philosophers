@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 11:56:51 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/31 16:32:51 by jbettini         ###   ########.fr       */
+/*   Updated: 2022/02/01 00:16:41 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ void	print_log(t_philo *philo, long long time_pass, int flg)
 		pthread_mutex_lock(&(philo->simul->log));
 		time = time_pass - philo->simul->start;
 		if (flg == EAT)
-			printf("%lld philo %d is eating\n", time, philo->number + 1);
+			printf("%lld %d is eating\n", time, philo->number + 1);
 		else if (flg == SLEEP)
-			printf("%lld philo %d is sleeping\n", time, philo->number + 1);
+			printf("%lld %d is sleeping\n", time, philo->number + 1);
 		else if (flg == THINK)
-			printf("%lld philo %d is thinking\n", time, philo->number + 1);
+			printf("%lld %d is thinking\n", time, philo->number + 1);
 		else if (flg == FORK)
-			printf("%lld philo %d has taken a fork\n", time, philo->number + 1);
+			printf("%lld %d has taken a fork\n", time, philo->number + 1);
 		pthread_mutex_unlock(&(philo->simul->log));
 	}	
 	else if (eat_and_life(philo->simul->philo, \
@@ -91,7 +91,7 @@ void	print_log(t_philo *philo, long long time_pass, int flg)
 		pthread_mutex_lock(&(philo->simul->log));
 		time = time_pass - philo->simul->start;
 		if (flg == DIE)
-			printf("%lld philo %d died\n", time, philo->number + 1);
+			printf("%lld %d died\n", time, philo->number + 1);
 	}
 }
 
