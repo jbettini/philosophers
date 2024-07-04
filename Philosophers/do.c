@@ -6,7 +6,7 @@
 /*   By: jbettini <jbettini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 11:03:37 by jbettini          #+#    #+#             */
-/*   Updated: 2022/01/31 16:51:35 by jbettini         ###   ########.fr       */
+/*   Updated: 2024/07/04 02:28:48 by jbettini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	eat(t_simul *simul, t_philo *philo)
 			eat_and_life(simul->philo, simul->param.philo_nb) == 2)
 	{
 		free_exit(simul, 1);
-		exit(1);
+		return ;
 	}
 	philo->last_meal = get_time();
 	pthread_mutex_unlock(&(simul->meal));
