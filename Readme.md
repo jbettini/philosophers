@@ -17,8 +17,8 @@ Features
 
 ## Installation
 ```
-git clone https://github.com/jbettini/Philosophers.git
-cd Philosophers
+git clone https://github.com/jbettini/Philosophers.git;
+cd Philosophers;
 make
 ```
 
